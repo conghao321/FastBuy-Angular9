@@ -1,15 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>  
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wow</title>
+    <link rel="stylesheet" href="./static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&family=Open+Sans:wght@700&display=swap" rel="stylesheet">
+    <title>Searching in eBay</title>
+
 </head>
-<body>
-    <form action="/req" method="POST" name='form1'>
-        <input type="text" name="num1" placeholder="shabi">
-        <input type="text" name="num2" placeholder="caigou">
-        <button type="submit" name="submit">laji</button>
+
+
+<body style="text-align: center;">
+ 
+  <div class="top-container" style="margin: 0 auto;">
+    <div class="logo-container" style="display:inline-block">
+      <img id="logo" src="./static/images/eBayLogo.png" >
+    </div>
+    <div class="header-container" style="display:inline-block">
+      <h1 id="header-text">Shopping</h1>
+    </div>
+  </div>
+
+  <div class="login-container">
+    <form id="form-one" action="/" method="GET" name='form1'>
+      <table class="form-table">
+          <tr>
+            <td><span class="title-name">Key Words<span id="star">*</span>:&nbsp;</span>
+              <input id="key-words" type="text" name="key-words"></td>
+          </tr>
+          <tr>
+            <td><span class="title-name">Price Range:</span><span>&nbsp;&nbsp;From</span>
+              <input id="price1" type="number" class="price-range" name="price-range-from">
+              <span>&nbsp;to&nbsp;</span>
+              <input id="price2" type="number" class="price-range" name="price-range-to">
+            </td>
+          </tr> 
+          <tr>
+              <td><span class="title-name">Conditions:</span>  
+                <input type="checkbox" id="new" name="new" value="new">
+                <label for="new">New</label>
+                <input type="checkbox" id="used" name="used" value="used">
+                <label for="used">Used</label>
+                <input type="checkbox" id="very-good" name="very-good" value="very-good">
+                <label for="very-good">Very Good</label>
+                <input type="checkbox" id="good" name="good" value="good">
+                <label for="good">Good</label>
+                <input type="checkbox" id="acceptable" name="acceptable" value="acceptable">
+                <label for="acceptable">Acceptable</label>                 
+              </td>
+
+            </tr> 
+          <tr>
+              <td><span class="title-name">Sellers:</span>
+                <input type="checkbox" id="return" name="return" value="return">
+                <label for="return">Return Accepted</label>
+              </td>
+          </tr> 
+          <tr>
+              <td><span class="title-name">Shipping:</span>
+                <input type="checkbox" id="free" name="free" value="free">
+                <label for="free">Free</label>
+                <input type="checkbox" id="expedited" name="expedited" value="expedited">
+                <label for="expedited">Expedited</label>
+              </td>
+          </tr>   
+          <tr>
+              <td><span class="title-name">Sort by:</span>
+                  <select name="sort-by-selector" id="sort-selector">
+                  <option name=best-match value="bm" selected="selected">Best Match</option>
+                  <option name=price-highest value="ph">Price: highest first</option>
+                  <option name=total-price-highest value="tph">Price + Shipping: highest first</option>
+                  <option name=total-price-lowest value="tpl">Price + Shipping: lowest first</option>
+                  </select>
+                </td>
+          </tr>                     
+          <tr>
+            <td>
+              <button class="button" type="reset" name="clear" for="form1">Clear</button>
+              <button class="button" type="submit" name="submit" for="form1">Search</button>
+            </td>               
+          </tr>  
+        </table>
     </form>
+  </div>
+
+  <div class="bottom-container" id="bottom">
+
+  </div>
+<script>
+  var formOne = document.getElementById('form-one');
+</script>
+  <script src="./static/script/index.js"></script>
 </body>
+
+
 </html>
+

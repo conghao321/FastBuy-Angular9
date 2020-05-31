@@ -1,24 +1,73 @@
-from flask import Flask,send_from_directory,send_file
-from flask import request
+from flask import Flask,send_file
+from flask import request,jsonify
+import json
+import requests
 
 app = Flask(__name__)
 
+#This is the index rout
 @app.route('/',methods=['GET','POST'])
 def index():
     return send_file('index.html')
 
 
-@app.route('/req',methods=['POST'])
-def success():
-    print(request.form)  # ImmutableMultiDict([('user', 'Oldboy'), ('pwd', 'DragonFire')])
-    # ImmutableMultiDict 它看起來像是的Dict 就用Dict的方法取值試一下吧
-    print(request.form["num1"])  # Oldboy
-    print(request.form.get("num2"))  # DragonFire
-    # 看來全部才對了, ImmutableMultiDict 似乎就是個字典,再來玩一玩它
-    print(list(request.form.keys()))  # ['user', 'pwd'] 看來是又才對了
-    #如果以上所有的方法你都覺得用的不爽的話
-    req_dict = dict(request.form)
-    print(req_dict)  # 如果你覺得用字典更爽的話,也可以轉成字典操作(這裡有坑
+#This function is the main method and it is to distribute parameters\
+#to next their stations
+@app.route('/input',methods=['GET','POST'])
+def input():
+    url=""
+    if(request.method=='GET'):
+        data=request.args    
+        keyWords=data.get("key-words")
+        priceMin=data.get("price1")
+        priceMax=data.get("price2")
+        newItem=data.get("newItem")
+        usedItem=data.get("usedItem")
+        veryGoodItem=data.get("veryGoodItem")
+        goodItem=data.get("goodItem")
+        acceptableItem=data.get("acceptableItem")
+        returnAccepted=data.get("returnAccepted")
+        freeShipping=data.get("freeShipping")
+        expShipping=data.get("expShipping")
+        sortBy=data.get("veryGoodItem")
 
-    print(request.args)
-    return 'haha'
+        ###required params
+        params_dict={'OPERATION-NAME':'findItemsAdvanced','SERVICE-VERSION':'1.0.0',
+        'SECURITY-APPNAME':'haocong-laodashi-PRD-32eb6beb6-89281c37','RESPONSE-DATA-FORMAT':'JSON','REST-PAYLOAD':'',
+        'keywords':'iphone'}
+
+        ###filters url:
+        filters_url=get_filter_url(priceMin,priceMax,newItem,usedItem,veryGoodItem,goodItem,acceptableItem,returnAccepted,freeShipping,expShipping,sortBy)
+        ###return data
+        item_dict=eBayCall(params_dict,filters_url)
+        print(item_dict)
+
+    return json.dumps(item_dict)
+
+
+#This function is used to call the eBay API and retrieve data
+def eBayCall(params_dict,filters_url):
+    prev_url='https://svcs.ebay.com/services/search/FindingService/v1'
+    r=requests.get(prev_url,params_dict)
+    url=r.url+filters_url
+    r=requests.get(url)
+    print(r.url)
+
+    item_json=r.json()
+    #print(item_json)
+    return item_json
+
+
+#Tis function is used to get the filters
+def get_filter_url(priceMin,priceMax,newItem,usedItem,veryGoodItem,goodItem,acceptableItem,returnAccepted,freeShipping,expShipping,sortBy):
+    filter_url='&sortOrder=BestMatch'
+    filter_url+='&itemFilter(0).name=MaxPrice&itemFilter(0).value='+priceMax+'&itemFilter(0).paramName=Currency&itemFilter(0).paramValue=USD'
+    filter_url+='&itemFilter(1).name=MinPrice&itemFilter(1).value='+priceMin+'&itemFilter(1).paramName=Currency&itemFilter(1).paramValue=USD'
+    filter_url+='&itemFilter(2).name=ReturnsAcceptedOnly&itemFilter(2).value='+returnAccepted
+    filter_url+='&itemFilter(3).name=FreeShippingOnly&itemFilter(3).value='+freeShipping
+    #filter_url+='&itemFilter(4).name=ExpeditedShippingType&itemFilter(4).value='+expShipping
+    filter_url+='&itemFilter(5).name=Condition&itemFilter(5).value(0)=2000&itemFilter(5).value(1)=3000'
+    return filter_url
+
+
+

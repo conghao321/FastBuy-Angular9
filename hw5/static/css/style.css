@@ -1,0 +1,69 @@
+table,td,th,tr {
+    text-align: center;
+   	border-collapse: collapse;
+    border-style: solid;
+    border-width: thin;
+    width:500px;
+    margin:0 auto;
+  }
+
+  tr{
+      height: 2rem;
+  }
+  .button {
+    font-size: 0.9rem;
+    border-radius: 8px;
+    background-color: #e7e7e7; 
+    color: black;
+    transition-duration: 0.4s;
+  }
+  
+  .button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+
+
+  .top-container{
+    vertical-align:middle;
+    margin:0 auto 10px auto;
+    text-align:center
+    
+  }
+  .header-container{
+    position: relative;
+    top:-10px;
+  }
+
+  .login-container{
+    position: relative;
+    top: -10px;
+  }
+  .bottom-container{
+    margin:0 auto;
+    position: relative;
+    top:300px;
+  }
+
+  .title-name{
+    font-weight: bold;
+  }
+  .price-range{
+    width: 50px;
+  }
+
+  #logo{
+    height:50px;
+    float: left;
+  }
+
+  #header-text{
+    font-size: 1.7rem;
+  }
+  #star{
+    color:red;
+  }
+
+  #sort-selector{
+    width: 200px;
+  }

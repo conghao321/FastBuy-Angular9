@@ -41,8 +41,12 @@ table,td,th,tr {
   }
   .bottom-container{
     margin:0 auto;
+    padding: 0 auto;
     position: relative;
-    top:300px;
+    top:20px;
+    text-align: center;
+    vertical-align:middle;
+    display: inline-block;
   }
 
   .title-name{
@@ -52,11 +56,39 @@ table,td,th,tr {
     width: 50px;
   }
 
+
+
+
+  .card-container{
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: thin;
+    width:500px;
+    height:150px;   
+  }
+
+  .card-image{
+    float:left;
+    width:100px;
+    height:100px;
+  }
+
+  .other-cards-container{
+    display: none;
+  }
+
+  .show{
+    vertical-align:middle;
+    display: inline-block;
+  }
+
+
+
+
   #logo{
     height:50px;
     float: left;
   }
-
   #header-text{
     font-size: 1.7rem;
   }
@@ -66,4 +98,8 @@ table,td,th,tr {
 
   #sort-selector{
     width: 200px;
+  }
+
+  #show-more{
+    display:none;
   }

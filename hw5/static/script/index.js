@@ -69,8 +69,8 @@ function sendRequest(){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            text=xhttp.responseText;
-            display(text);
+            response=xhttp.responseText;
+            display(response);
       }
     };
 
@@ -83,12 +83,67 @@ function sendRequest(){
     xhttp.send();    
 }
 
-function display(json_text){
-    text=JSON.parse(json_text);
-    console.log(text);
-    for(var i=0;i<text.length;i++){
-        console.log(text[i].title);
-        document.getElementById("bottom").innerHTML =text[i].title
+function display(response){
+    objects=JSON.parse(response);
+    //console.log(objects);
+    var totalResult=Number(objects[0]);
+    document.getElementById("resultText").innerHTML ="total result :"+totalResult+" found";
+    
+    var topCards=document.getElementById("topThreeCards");
+    topCards.innerHTML="";
+
+    if(totalResult==0){
+        topCards.innerHTML="<h1>meidongxi, shabi</h1>";
+        return;
     }
-    //document.getElementById("bottom").innerHTML =text;
+    //top3 cards
+    for(var i=1;i<=3;i++){
+        appendCard(topCards,objects[i]);
+    }
+
+    //last 7cards
+    var otherCards=document.getElementById("otherCards");
+    for(var i=4;i<objects.length;i++){
+        appendCard(otherCards,objects[i]);
+    }  
+    
+    document.getElementById("show-more").style.display='block';
 }
+
+function appendCard(target,card){
+
+    var imgUrl=card.imageURL;
+
+    if(imgUrl=="https://thumbs1.ebaystatic.com/pict/04040_0.jpg"){
+        imgUrl="./static/images/ebay_default.jpg";
+    }
+
+    var cardText="<div class='card-container'><h4 class='card-title'>"+card.title;
+    cardText+="<img class='card-image' src='"+imgUrl+"' alt='no tu'>";
+    cardText+="</h4><h4 class='card-category'>Category:"+card.category;
+    cardText+="</h4><h4 class='card-price'>Price:$"+card.price+"</h4></div>";
+    target.innerHTML +=cardText;
+}
+
+
+ 
+
+
+//
+function showMoreCards(event){
+    event.preventDefault();
+    var target=document.getElementById("otherCardsContainer");
+    var display=target.style.display;
+    if(display=='block'){
+        target.style.display='none';//start hiding the 7cards
+        document.getElementById("show-more").style.display='block';
+        document.getElementById("show-less").style.display='none';
+    }else{
+        target.style.display='block'//start displaying the 7cards
+        document.getElementById("show-more").style.display='none';
+        document.getElementById("show-less").style.display='block';
+    }
+}
+
+showMore.addEventListener("click",showMoreCards);
+showLess.addEventListener("click",showMoreCards);

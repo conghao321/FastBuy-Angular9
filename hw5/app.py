@@ -106,11 +106,19 @@ def get_filter_url(priceMin,priceMax,newItem,usedItem,veryGoodItem,goodItem,acce
 
 
 def get_result(res_dict):
+    total_count=res_dict['findItemsAdvancedResponse'][0]['paginationOutput'][0]['totalEntries'][0] 
+    obj_list=[]
+    print(total_count)
+    if(total_count=='0'):
+        print("sdfdsfsfsf")
+        obj_list.append(0)
+        return obj_list
+
     search_result=res_dict['findItemsAdvancedResponse'][0]['searchResult'][0]
     item_count=int(search_result['@count'])
     items_list=search_result['item']
 
-    obj_list=[]
+    obj_list.append(total_count)
     for i in range(item_count):
         item=dict()
         item['title']=items_list[i]['title'][0]
@@ -120,7 +128,11 @@ def get_result(res_dict):
         
 
         #item info
-        item['imageURL']=items_list[i]['galleryURL'][0]
+        try:
+            item['imageURL']=items_list[i]['galleryURL'][0]
+        except KeyError:
+            item['imageURL']='https://thumbs1.ebaystatic.com/pict/04040_0.jpg'
+
         item['category']=items_list[i]['primaryCategory'][0]['categoryName'][0]
         item['productLink']=items_list[i]['viewItemURL'][0]
         item['condition']=items_list[i]['condition'][0]['conditionDisplayName'][0]

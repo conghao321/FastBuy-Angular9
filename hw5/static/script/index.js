@@ -27,8 +27,7 @@ function checkInput() {
     
     minPrice=Number(minPrice);
     maxPrice=Number(maxPrice);
-    console.log(maxPrice);
-    console.log(minPrice);
+
     validation=true;
     if(keyWord==""){
         window.alert("key word is required");
@@ -70,11 +69,8 @@ function sendRequest(){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(xhttp.responseText);
-            text=JSON.parse(xhttp.responseText);
-            console.log(text);
-            document.getElementById("bottom").innerHTML = text;
-
+            text=xhttp.responseText;
+            display(text);
       }
     };
 
@@ -87,3 +83,12 @@ function sendRequest(){
     xhttp.send();    
 }
 
+function display(json_text){
+    text=JSON.parse(json_text);
+    console.log(text);
+    for(var i=0;i<text.length;i++){
+        console.log(text[i].title);
+        document.getElementById("bottom").innerHTML =text[i].title
+    }
+    //document.getElementById("bottom").innerHTML =text;
+}

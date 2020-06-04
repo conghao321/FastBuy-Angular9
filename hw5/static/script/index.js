@@ -2,12 +2,15 @@
 The main function to submit the form and and listen the browser's action.
 That's combination of the events with our functions .
 */
+var expand=false;
 function submitForm(event){
     //prevent default actions
     event.preventDefault();
     validation=checkInput();
     if(!validation) return;
+    reset();
     sendRequest();
+    
 }
 formOne.addEventListener('submit', submitForm);
 
@@ -51,7 +54,7 @@ The core part of our project, to get the elements and send a request
 The request is based on AJAX
 
 */
-function sendRequest(){
+function sendRequest(show){
     var keyWords=document.getElementById("key-words").value;
     var priceMin=document.getElementById("price1").value;
     var priceMax=document.getElementById("price2").value;
@@ -98,19 +101,27 @@ function display(response){
     }
     //top3 cards
     for(var i=1;i<=3;i++){
-        appendCard(topCards,objects[i]);
+        appendCard(topCards,objects[i],i);
     }
 
     //last 7cards
     var otherCards=document.getElementById("otherCards");
     for(var i=4;i<objects.length;i++){
-        appendCard(otherCards,objects[i]);
+        appendCard(otherCards,objects[i],i);
     }  
-    
-    document.getElementById("show-more").style.display='block';
+    //to tackle the two buttons when click submit
+    if(expand==false){
+        document.getElementById("show-more").style.display='block';
+    }else if(expand==true){
+        document.getElementById("show-more").style.display='none';
+    }
 }
 
-function appendCard(target,card){
+
+
+
+//to append new card-item
+function appendCard(target,card,index){
 
     var imgUrl=card.imageURL;
 
@@ -118,32 +129,53 @@ function appendCard(target,card){
         imgUrl="./static/images/ebay_default.jpg";
     }
 
-    var cardText="<div class='card-container'><h4 class='card-title'>"+card.title;
-    cardText+="<img class='card-image' src='"+imgUrl+"' alt='no tu'>";
-    cardText+="</h4><h4 class='card-category'>Category:"+card.category;
-    cardText+="</h4><h4 class='card-price'>Price:$"+card.price+"</h4></div>";
+    var cardText="<div class='card-container' id='card"+index+"'>";
+    
+    cardText+="<div class='card-img-container'><img class='card-image' src='"+imgUrl+"' alt='no tu'></div>";
+
+    cardText+="<div class='card-text-container'>";
+    cardText+="<h4 class='card-title'>"+card.title+"</h4>";
+    cardText+="</h4><h4 class='card-category'>Category:&nbsp;"+card.category+"&nbsp;</h4>";
+    cardText+="<h4 class='card-category'>Category:&nbsp;"+card.condition;
+
+    if(card.topRated!='false'){
+        cardText+="<span><img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'></span>";
+    } 
+    cardText+="</h4>";
+
+
+    cardText+="</h4><h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div></div>";
     target.innerHTML +=cardText;
 }
 
 
- 
 
-
-//
+//to display other 7-tem
 function showMoreCards(event){
     event.preventDefault();
     var target=document.getElementById("otherCardsContainer");
-    var display=target.style.display;
-    if(display=='block'){
+    var othersDisplay=target.style.display;
+    more=document.getElementById("show-more");
+    less=document.getElementById("show-less");
+    if(othersDisplay=='block'){
         target.style.display='none';//start hiding the 7cards
-        document.getElementById("show-more").style.display='block';
-        document.getElementById("show-less").style.display='none';
+        more.style.display='block';
+        less.style.display='none';
+        expand=false;
     }else{
         target.style.display='block'//start displaying the 7cards
-        document.getElementById("show-more").style.display='none';
-        document.getElementById("show-less").style.display='block';
+        more.style.display='none';
+        less.style.display='block';
+        expand=true;
     }
 }
 
 showMore.addEventListener("click",showMoreCards);
 showLess.addEventListener("click",showMoreCards);
+
+function reset(){
+    document.getElementById("show-more").style.display='none';
+    document.getElementById("show-less").style.display='none';
+    document.getElementById("otherCards").innerHTML="";
+    document.getElementById("topThreeCards").innerHTML="";
+}

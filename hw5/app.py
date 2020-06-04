@@ -107,10 +107,8 @@ def get_filter_url(priceMin,priceMax,newItem,usedItem,veryGoodItem,goodItem,acce
 
 def get_result(res_dict):
     total_count=res_dict['findItemsAdvancedResponse'][0]['paginationOutput'][0]['totalEntries'][0] 
-    obj_list=[]
-    print(total_count)
+    obj_list=[] 
     if(total_count=='0'):
-        print("sdfdsfsfsf")
         obj_list.append(0)
         return obj_list
 
@@ -133,17 +131,41 @@ def get_result(res_dict):
         except KeyError:
             item['imageURL']='https://thumbs1.ebaystatic.com/pict/04040_0.jpg'
 
-        item['category']=items_list[i]['primaryCategory'][0]['categoryName'][0]
-        item['productLink']=items_list[i]['viewItemURL'][0]
-        item['condition']=items_list[i]['condition'][0]['conditionDisplayName'][0]
-        item['topRated']=items_list[i]['topRatedListing'][0]
+        try:
+            item['category']=items_list[i]['primaryCategory'][0]['categoryName'][0]
+        except KeyError:
+            pass
 
+        try:
+            item['productLink']=items_list[i]['viewItemURL'][0]
+        except KeyError:
+            pass
+        try:
+            item['condition']=items_list[i]['condition'][0]['conditionDisplayName'][0]
+        except KeyError:
+            pass            
+        try:
+            item['topRated']=items_list[i]['topRatedListing'][0]
+        except KeyError:
+            pass
         #shipping
-        item['shippingCost']=items_list[i]['shippingInfo'][0]['shippingServiceCost'][0]['__value__']
-        item['acceptReturn']=items_list[i]['returnsAccepted'][0]
-        item['expedited']=items_list[i]['shippingInfo'][0]['expeditedShipping'][0]
-        item['location']=items_list[i]['location'][0]
-        
+        try:
+            item['shippingCost']=items_list[i]['shippingInfo'][0]['shippingServiceCost'][0]['__value__']
+        except KeyError:
+            pass
+
+        try:
+            item['acceptReturn']=items_list[i]['returnsAccepted'][0]
+        except KeyError:
+            pass
+        try:
+            item['expedited']=items_list[i]['shippingInfo'][0]['expeditedShipping'][0]
+        except KeyError:
+            pass
+        try:
+            item['location']=items_list[i]['location'][0]
+        except KeyError:
+            pass       
         #add it into the dict
         obj_list.append(item)
 

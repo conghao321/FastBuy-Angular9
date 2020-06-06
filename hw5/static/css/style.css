@@ -87,7 +87,7 @@ table,td,th,tr {
     width: 500px;
     height:90%;
     text-align: left;
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     font-weight: 400;
     font-size: 0.9em;
     position: relative;
@@ -158,7 +158,7 @@ table,td,th,tr {
   .card-price{
     font-family: 'Lora', serif;
     font-weight: 700;
-    font-size: 1.2em;
+    font-size: 1em;
   }
 
 
@@ -206,6 +206,11 @@ table,td,th,tr {
   .no-result-text{
     position: relative;
     top:20px;
+  }
+
+  .card-location{
+    font-style: italic;
+    font-weight: 300;
   }
 
   #logo{

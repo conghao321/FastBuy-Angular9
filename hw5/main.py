@@ -2,7 +2,6 @@ from flask import Flask,send_file
 from flask import request,jsonify
 import json
 import requests
-from collections import OrderedDict
 
 app = Flask(__name__)
 
@@ -57,6 +56,7 @@ def eBayCall(params_dict,filters_url):
     r=requests.get(prev_url,params_dict)
     url=r.url+filters_url
     r=requests.get(url)
+    print(r.url)
     item_json=r.json()
     #print(item_json)
     return item_json
@@ -170,3 +170,11 @@ def get_result(res_dict):
 
     #return the complete dict result
     return obj_list
+
+
+if __name__ == '__main__':
+    # This is used when running locally only. When deploying to Google App
+    # Engine, a webserver process such as Gunicorn will serve the app. This
+    # can be configured by adding an `entry point` to app.yaml.
+    app.run(host='127.0.0.1', port=8080, debug=True)
+# [END gae_python37_app]

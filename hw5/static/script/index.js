@@ -121,19 +121,36 @@ function display(response,keyWords){
     }else if(expand==true){
         document.getElementById("show-more").style.display='none';
     }
-
+    
     //adding listener to the cards to reflect the clicking
+    addExpandListener();
+}
+
+function addExpandListener(){
     for (var i = 0; i < document.querySelectorAll(".card-container").length; i++) {
         document.querySelectorAll(".card-container")[i].addEventListener("click", function() {
             //to detect which cards id. for example card1's id is 1;
+            if(document.getElementsByClassName("card-title")[i-1].event=="click"){
+                console.log(document.getElementsByClassName("card-title")[i-1]);
+                alert("sss");
+                return;
+            }
             var index=Number(this.id[4]);
             expandCard(this,objects[index],index);  
+        });
+    }
+
+    for (var i = 0; i < document.querySelectorAll(".card-title").length; i++) {
+        document.querySelectorAll(".card-title")[i].removeEventListener("click", function() {
+            //to detect which cards id. for example card1's id is 1;
+            alert("removed");
         });
     }
 }
 //to append new card-item below the previous cards
 function newCard(card,index){
     var imgUrl=card.imageURL;
+    var shippingCost=Number(card.shippingCost).toFixed(2);
 
     if(imgUrl=="https://thumbs1.ebaystatic.com/pict/04040_0.jpg"){
         imgUrl="./static/images/ebay_default.jpg";
@@ -152,7 +169,12 @@ function newCard(card,index){
         cardText+="<span><img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'></span>";
     } 
     cardText+="</h4>";
-    cardText+="</h4><h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div></div>";
+    if(shippingCost<=0){
+        cardText+="<h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div>";
+    }else{
+        cardText+="<h4 class='card-price'>Price:&nbsp;$"+card.price+"<span class='card-shipping-cost'>&nbsp+&nbsp(&nbsp$"+shippingCost
+        +"&nbsp) for shipping</span></h4></div>";
+    }
     return cardText;
 }
 
@@ -192,9 +214,9 @@ function completeCard(card,index){
     cardText+="</span></h4>";
 
     if(shippingCost<=0){
-        cardText+="</h4><h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div>";
+        cardText+="<h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div>";
     }else{
-        cardText+="</h4><h4 class='card-price'>Price:&nbsp;$"+card.price+"<span class='card-shipping-cost'>&nbsp+&nbsp(&nbsp$"+shippingCost
+        cardText+="<h4 class='card-price'>Price:&nbsp;$"+card.price+"<span class='card-shipping-cost'>&nbsp+&nbsp(&nbsp$"+shippingCost
         +"&nbsp) for shipping</span><span class='card-location'>&nbspFrom&nbsp"+card.location+"</span></h4></div>";
     }
     return cardText;
@@ -202,6 +224,7 @@ function completeCard(card,index){
 
 function prevCard(card){
     var imgUrl=card.imageURL;
+    var shippingCost=Number(card.shippingCost).toFixed(2);
 
     var cardText="";
     if(imgUrl=="https://thumbs1.ebaystatic.com/pict/04040_0.jpg"){
@@ -219,7 +242,12 @@ function prevCard(card){
         cardText+="<span><img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'></span>";
     } 
     cardText+="</h4>";
-    cardText+="</h4><h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div>";
+    if(shippingCost<=0){
+        cardText+="<h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div>";
+    }else{
+        cardText+="<h4 class='card-price'>Price:&nbsp;$"+card.price+"<span class='card-shipping-cost'>&nbsp+&nbsp(&nbsp$"+shippingCost
+        +"&nbsp) for shipping</span></h4></div>";
+    }
     return cardText;
 }
 
@@ -235,11 +263,13 @@ function showMoreCards(event){
         more.style.display='block';
         less.style.display='none';
         expand=false;
+        skipTo(false);
     }else{
         target.style.display='block'//start displaying the 7cards
         more.style.display='none';
         less.style.display='block';
         expand=true;
+        skipTo(true);
     }
 }
 
@@ -252,6 +282,21 @@ function reset(){
     document.getElementById("otherCards").innerHTML="";
     document.getElementById("topThreeCards").innerHTML="";
 }
+
+function skipTo(downWard){
+
+    if(downWard){
+        window.scrollBy({
+            top: 2000,
+            behavior: 'smooth'
+          });    
+    }else{
+        window.scrollBy({
+            top: -2000,
+            behavior: 'smooth'
+          });    
+    }
+    }
 
 
 //click card

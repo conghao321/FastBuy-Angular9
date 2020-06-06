@@ -57,7 +57,6 @@ def eBayCall(params_dict,filters_url):
     r=requests.get(prev_url,params_dict)
     url=r.url+filters_url
     r=requests.get(url)
-    print(r.url)
     item_json=r.json()
     #print(item_json)
     return item_json

@@ -1,8 +1,13 @@
+var expand=false;
+var clicked=new Array();
+for(var i=0;i<10;i++ ){
+    clicked[i]=false;
+}
+
 /*
 The main function to submit the form and and listen the browser's action.
 That's combination of the events with our functions .
 */
-var expand=false;
 function submitForm(event){
     //prevent default actions
     event.preventDefault();
@@ -10,10 +15,8 @@ function submitForm(event){
     if(!validation) return;
     reset();
     sendRequest();
-    
 }
 formOne.addEventListener('submit', submitForm);
-
 
 /*
 This is function is used to check our form's validation
@@ -30,19 +33,20 @@ function checkInput() {
     
     minPrice=Number(minPrice);
     maxPrice=Number(maxPrice);
+    if(maxPrice==0) maxPrice=Number.MAX_SAFE_INTEGER ;
 
     validation=true;
     if(keyWord==""){
-        window.alert("key word is required");
+        window.alert("Key word is required! Please try again");
         validation=false;
     }
     if (minPrice< 0 || maxPrice<0) {
-        message = "js Price Range values cannot be negative";
+        message = "Price range values cannot be negative. Please try a value greater than or equal to 0.0";
         window.alert(message);
         validation=false;
     }
     if(minPrice>maxPrice){
-        message = "js min no greater than max";
+        message = "Oops! Lower price limit cannot be greater than the upper price limit! Please try again";
         window.alert(message);
         validation=false;
     }  
@@ -52,7 +56,6 @@ function checkInput() {
 /*
 The core part of our project, to get the elements and send a request
 The request is based on AJAX
-
 */
 function sendRequest(show){
     var keyWords=document.getElementById("key-words").value;
@@ -73,7 +76,7 @@ function sendRequest(show){
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             response=xhttp.responseText;
-            display(response);
+            display(response,keyWords);
       }
     };
 
@@ -85,44 +88,51 @@ function sendRequest(show){
     , true);
     xhttp.send();    
 }
-
-function display(response){
+//show the result cards
+function display(response,keyWords){
     objects=JSON.parse(response);
     //console.log(objects);
     var totalResult=Number(objects[0]);
-    document.getElementById("resultText").innerHTML ="total result :"+totalResult+" found";
-    
-    var topCards=document.getElementById("topThreeCards");
-    topCards.innerHTML="";
-
+    var resStat=document.getElementById("resultStat");
     if(totalResult==0){
-        topCards.innerHTML="<h1>meidongxi, shabi</h1>";
+        resStat.innerHTML="<h2 class='no-result-text'>No result found</h2>";
         return;
     }
+    
+    resStat.innerHTML ="<h3 class='result-stat'>"+totalResult+" results found for <span class='search-title'>"+keyWords+"</span> </h3>"+"<hr class='split-line'>";
+    resStat.innerHtml="<hr class='split-line'>";
+
+    var topCards=document.getElementById("topThreeCards");
+    topCards.innerHTML="";
     //top3 cards
     for(var i=1;i<=3;i++){
-        appendCard(topCards,objects[i],i);
+        topCards.innerHTML+=newCard(objects[i],i);
     }
 
     //last 7cards
     var otherCards=document.getElementById("otherCards");
     for(var i=4;i<objects.length;i++){
-        appendCard(otherCards,objects[i],i);
+        otherCards.innerHTML+=newCard(objects[i],i);
     }  
+
     //to tackle the two buttons when click submit
     if(expand==false){
         document.getElementById("show-more").style.display='block';
     }else if(expand==true){
         document.getElementById("show-more").style.display='none';
     }
+
+    //adding listener to the cards to reflect the clicking
+    for (var i = 0; i < document.querySelectorAll(".card-container").length; i++) {
+        document.querySelectorAll(".card-container")[i].addEventListener("click", function() {
+            //to detect which cards id. for example card1's id is 1;
+            var index=Number(this.id[4]);
+            expandCard(this,objects[index],index);  
+        });
+    }
 }
-
-
-
-
-//to append new card-item
-function appendCard(target,card,index){
-
+//to append new card-item below the previous cards
+function newCard(card,index){
     var imgUrl=card.imageURL;
 
     if(imgUrl=="https://thumbs1.ebaystatic.com/pict/04040_0.jpg"){
@@ -134,21 +144,84 @@ function appendCard(target,card,index){
     cardText+="<div class='card-img-container'><img class='card-image' src='"+imgUrl+"' alt='no tu'></div>";
 
     cardText+="<div class='card-text-container'>";
-    cardText+="<h4 class='card-title'>"+card.title+"</h4>";
-    cardText+="</h4><h4 class='card-category'>Category:&nbsp;"+card.category+"&nbsp;</h4>";
-    cardText+="<h4 class='card-category'>Category:&nbsp;"+card.condition;
+    cardText+="<h4 class='card-title'><a href='"+card.productLink+"' target='_blank'>"+card.title+"</a></h4>";
+    cardText+="<h4 class='card-category'>Category:&nbsp;"+card.category+"&nbsp<span><a href='"+card.productLink+"' target='_blank'><img class='redirect-img' src='./static/images/redirect.png'></a></span></h4>";
+    
+    cardText+="<h4 class='card-category'>Conditions:&nbsp;"+card.condition;
+    if(card.topRated!='false'){
+        cardText+="<span><img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'></span>";
+    } 
+    cardText+="</h4>";
+    cardText+="</h4><h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div></div>";
+    return cardText;
+}
 
+function completeCard(card,index){
+    var imgUrl=card.imageURL;
+    var shippingCost=Number(card.shippingCost).toFixed(2);
+
+    if(imgUrl=="https://thumbs1.ebaystatic.com/pict/04040_0.jpg"){
+        imgUrl="./static/images/ebay_default.jpg";
+    }
+
+    var cardText=""; 
+    cardText+="<div class='card-img-container'><img class='card-image' src='"+imgUrl+"' alt='no tu'></div>";
+    cardText+="<div class='card-text-container'>";
+    cardText+="<h4><img class='red-cross' id='redCross"+index+"' src='./static/images/cross.png'></h4>";
+    cardText+="<h4 class='card-title'><a href='"+card.productLink+"' target='_blank'>"+card.title+"</a></h4>";
+    cardText+="<h4 class='card-category'>Category:&nbsp;"+card.category+"&nbsp<span><a href='"+card.productLink+"' target='_blank'><img class='redirect-img' src='./static/images/redirect.png'></a></span></h4>";;
+    cardText+="<h4 class='card-category'>Conditions:&nbsp;"+card.condition;
     if(card.topRated!='false'){
         cardText+="<span><img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'></span>";
     } 
     cardText+="</h4>";
 
+    if(card.acceptReturn=='true'){
+        cardText+="<h4 class='card-return'>Sellers&nbsp<span class='accept-bold' style='font-size:bold;'>accepts</span> returns</h4>";
+    }else{
+        cardText+="<h4 class='card-return'>Sellers&nbsp<span class='accept-bold' style='font-size:bold;'>does not accepts</span> returns</h4>";
+    }
+    if(shippingCost==0){
+        cardText+="<h4 class='shipping'>Free Shipping Available&nbsp<span>";
+    }else{
+        cardText+="<h4 class='shipping'>No Free Shipping&nbsp<span>";
+    }
+    if(card.expedited=='true'){
+        cardText+="--&nbspExpedited Shipping available";
+    }
+    cardText+="</span></h4>";
 
-    cardText+="</h4><h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div></div>";
-    target.innerHTML +=cardText;
+    if(shippingCost<=0){
+        cardText+="</h4><h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div>";
+    }else{
+        cardText+="</h4><h4 class='card-price'>Price:&nbsp;$"+card.price+"<span class='card-shipping-cost'>&nbsp+&nbsp(&nbsp$"+shippingCost
+        +"&nbsp) for shipping</span><span class='card-location'>&nbspFrom&nbsp"+card.location+"</span></h4></div>";
+    }
+    return cardText;
 }
 
+function prevCard(card){
+    var imgUrl=card.imageURL;
 
+    var cardText="";
+    if(imgUrl=="https://thumbs1.ebaystatic.com/pict/04040_0.jpg"){
+        imgUrl="./static/images/ebay_default.jpg";
+    }
+   
+    cardText+="<div class='card-img-container'><img class='card-image' src='"+imgUrl+"' alt='no tu'></div>";
+
+    cardText+="<div class='card-text-container'>";
+    cardText+="<h4 class='card-title'><a href='"+card.productLink+"' target='_blank'>"+card.title+"</a></h4>";
+    cardText+="<h4 class='card-category'>Category:&nbsp;"+card.category+"&nbsp<span><a href='"+card.productLink+"' target='_blank'><img class='redirect-img' src='./static/images/redirect.png'></a></span></h4>";
+    
+    cardText+="<h4 class='card-category'>Conditions:&nbsp;"+card.condition;
+    if(card.topRated!='false'){
+        cardText+="<span><img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'></span>";
+    } 
+    cardText+="</h4>";
+    cardText+="</h4><h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div>";
+    return cardText;
+}
 
 //to display other 7-tem
 function showMoreCards(event){
@@ -178,4 +251,20 @@ function reset(){
     document.getElementById("show-less").style.display='none';
     document.getElementById("otherCards").innerHTML="";
     document.getElementById("topThreeCards").innerHTML="";
+}
+
+
+//click card
+function expandCard(card,object,index){
+    //console.log(document.querySelectorAll(".red-cross"));
+    if(clicked[index]==false){
+        card.innerHTML=completeCard(object,index);
+        card.style.height='300px';
+        document.getElementById("redCross"+index).addEventListener("click",function(){
+            card.style.height='220px';
+            card.innerHTML=prevCard(object);
+        });
+    }
+    clicked[index]=!clicked[index];
+    return;
 }

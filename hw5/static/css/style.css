@@ -10,6 +10,13 @@ table,td,th,tr {
   tr{
       height: 2rem;
   }
+
+  hr{
+    background-color: #eeeeee;
+    border-bottom: 0.5px;
+    width: 95%;
+  }
+
   .button {
     font-size: 0.9rem;
     border-radius: 8px;
@@ -64,7 +71,7 @@ table,td,th,tr {
     border-width: thin;
     display: flex;
     width:750px;
-    height:180px;  
+    height:220px;  
     box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     border-radius: 9px;
@@ -78,36 +85,55 @@ table,td,th,tr {
   .card-text-container{
     align-items: center;
     width: 500px;
+    height:90%;
     text-align: left;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 0.9em;
     position: relative;
-    left: -25px;
+    top:-5px;
   }
 
   .card-img-container{
     width:200px;
-    height: 180px;
+    height: 100%;
     align-items: center;
     display: flex;
     text-align: center;
-    margin:0 auto;
-    position: relative;
-    left: -25px;
+    margin:auto;
+
   }
   .card-image{
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 90%;
+    max-height: 90%;
     display:inline-block;
     margin: auto;
-
     border-style:solid;
     border-color:#aaaaaa;
     border-width:3px;
+    cursor: pointer;
+    transition: all 0.6s;
 
   }
+  .card-image:hover{
+    transform: scale(1.5);
+    position:relative;
+    z-index:100;
+  }
 
-  .top-rated-img{
+  .redirect-img{
     width:20px;
     height:20px;  
+    position: relative; 
+    left:5px;
+    top:2px;
+  }
+  .top-rated-img{
+    position: relative;
+    left:10px;
+    top:5px;
+    width:22px;
+    height:30px;  
   }
 
   .other-cards-container{
@@ -119,12 +145,20 @@ table,td,th,tr {
 
   .card-title{
     font-weight: bold;
-    width:490px;
+    width:90%;
     white-space: nowrap;  
     text-overflow:ellipsis; 
     overflow:hidden;
     color:#0017e4;
     text-decoration:underline;
+    font-size: 1.3rem;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .card-price{
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: 1.2em;
   }
 
 
@@ -134,8 +168,9 @@ table,td,th,tr {
   }
 
   .show {
-    font-size: 1rem;
-    border-radius: 8px;
+    font-size: 1.2em;
+    border-radius: 4px;
+    border-width: thin;
     background-color: #e7e7e7; 
     color: black;
     transition-duration: 0.4s;
@@ -146,8 +181,32 @@ table,td,th,tr {
     color: white;
   }
 
+  .red-cross{
+    float:right;
+    width:20px;
+    height:20px;
 
+    position: relative;
+    right:20px;
+    top:-5px;
 
+  }
+
+  .result-stat{
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .search-title{
+    font-style: italic;
+    font-weight: 900;
+    font-size: 1.2em;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  }
+
+  .no-result-text{
+    position: relative;
+    top:20px;
+  }
 
   #logo{
     height:50px;

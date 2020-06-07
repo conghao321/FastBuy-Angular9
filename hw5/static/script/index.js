@@ -1,4 +1,7 @@
+//the status of the result page is showing more or showing less
 var expand=false;
+
+// the status of each card's expansion 
 var clicked=new Array();
 for(var i=0;i<10;i++ ){
     clicked[i]=false;
@@ -126,6 +129,7 @@ function display(response,keyWords){
     addExpandListener();
 }
 
+//adding Listener to every card
 function addExpandListener(){
     for (var i = 0; i < document.querySelectorAll(".card-container").length; i++) {
         document.querySelectorAll(".card-container")[i].addEventListener("click", function() {
@@ -150,7 +154,11 @@ function addExpandListener(){
 //to append new card-item below the previous cards
 function newCard(card,index){
     var imgUrl=card.imageURL;
-    var shippingCost=Number(card.shippingCost).toFixed(2);
+    var shippingCost=0;
+    if(card.shippingCost!=null)
+        shippingCost=Number(card.shippingCost).toFixed(2);
+    else 
+        shippingCost=0;
 
     if(imgUrl=="https://thumbs1.ebaystatic.com/pict/04040_0.jpg"){
         imgUrl="./static/images/ebay_default.jpg";
@@ -177,11 +185,15 @@ function newCard(card,index){
     }
     return cardText;
 }
-
+//a completely expanded card' info
 function completeCard(card,index){
     var imgUrl=card.imageURL;
-    var shippingCost=Number(card.shippingCost).toFixed(2);
-
+    var shippingCost=0;
+    if(card.shippingCost!=null)
+        shippingCost=Number(card.shippingCost).toFixed(2);
+    else 
+        shippingCost=0;
+        
     if(imgUrl=="https://thumbs1.ebaystatic.com/pict/04040_0.jpg"){
         imgUrl="./static/images/ebay_default.jpg";
     }
@@ -221,11 +233,15 @@ function completeCard(card,index){
     }
     return cardText;
 }
-
+//To close a card and display its previous info 
 function prevCard(card){
     var imgUrl=card.imageURL;
-    var shippingCost=Number(card.shippingCost).toFixed(2);
-
+    var shippingCost=0;
+    if(card.shippingCost!=null)
+        shippingCost=Number(card.shippingCost).toFixed(2);
+    else 
+        shippingCost=0;
+        
     var cardText="";
     if(imgUrl=="https://thumbs1.ebaystatic.com/pict/04040_0.jpg"){
         imgUrl="./static/images/ebay_default.jpg";
@@ -263,19 +279,19 @@ function showMoreCards(event){
         more.style.display='block';
         less.style.display='none';
         expand=false;
-        skipTo(false);
+        scrollTo(false);
     }else{
         target.style.display='block'//start displaying the 7cards
         more.style.display='none';
         less.style.display='block';
         expand=true;
-        skipTo(true);
+        scrollTo(true);
     }
 }
-
 showMore.addEventListener("click",showMoreCards);
 showLess.addEventListener("click",showMoreCards);
 
+//to reset the result-page and show buttons
 function reset(){
     document.getElementById("show-more").style.display='none';
     document.getElementById("show-less").style.display='none';
@@ -283,7 +299,8 @@ function reset(){
     document.getElementById("topThreeCards").innerHTML="";
 }
 
-function skipTo(downWard){
+// an animation to display scroll-up effect
+function scrollTo(downWard){
 
     if(downWard){
         window.scrollBy({
@@ -297,7 +314,6 @@ function skipTo(downWard){
           });    
     }
     }
-
 
 //click card
 function expandCard(card,object,index){

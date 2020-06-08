@@ -1,12 +1,12 @@
-//the status of the result page is showing more or showing less
-var expand=false;
 
 // the status of each card's expansion 
 var clicked=new Array();
 for(var i=0;i<10;i++ ){
     clicked[i]=false;
 }
-
+document.getElementById("show-more").style.display='none';
+document.getElementById("show-less").style.display='none';
+var searched=false;
 /*
 The main function to submit the form and and listen the browser's action.
 That's combination of the events with our functions .
@@ -119,12 +119,13 @@ function display(response,keyWords){
     }  
 
     //to tackle the two buttons when click submit
-    if(expand==false){
-        document.getElementById("show-more").style.display='block';
-    }else if(expand==true){
-        document.getElementById("show-more").style.display='none';
+    var moreStatus=document.getElementById("show-more").style.display;
+    var lessStatus=document.getElementById("show-less").style.display;
+    if((searched&&moreStatus==""||moreStatus=='none')&&(lessStatus==""||lessStatus=='none')){
+        moreStatus=document.getElementById("show-more").style.display='block';
     }
-    
+    searched=true;
+
     //adding listener to the cards to reflect the clicking
     addExpandListener();
 }
@@ -134,20 +135,8 @@ function addExpandListener(){
     for (var i = 0; i < document.querySelectorAll(".card-container").length; i++) {
         document.querySelectorAll(".card-container")[i].addEventListener("click", function() {
             //to detect which cards id. for example card1's id is 1;
-            if(document.getElementsByClassName("card-title")[i-1].event=="click"){
-                console.log(document.getElementsByClassName("card-title")[i-1]);
-                alert("sss");
-                return;
-            }
-            var index=Number(this.id[4]);
+            var index=Number(this.id.substring(4));
             expandCard(this,objects[index],index);  
-        });
-    }
-
-    for (var i = 0; i < document.querySelectorAll(".card-title").length; i++) {
-        document.querySelectorAll(".card-title")[i].removeEventListener("click", function() {
-            //to detect which cards id. for example card1's id is 1;
-            alert("removed");
         });
     }
 }
@@ -164,19 +153,17 @@ function newCard(card,index){
         imgUrl="./static/images/ebay_default.jpg";
     }
 
-    var cardText="<div class='card-container' id='card"+index+"'>";
-    
+    var cardText="<div class='card-container' id='card"+index+"'>";  
     cardText+="<div class='card-img-container'><img class='card-image' src='"+imgUrl+"' alt='no tu'></div>";
-
     cardText+="<div class='card-text-container'>";
     cardText+="<h4 class='card-title'><a href='"+card.productLink+"' target='_blank'>"+card.title+"</a></h4>";
-    cardText+="<h4 class='card-category'>Category:&nbsp;"+card.category+"&nbsp<span><a href='"+card.productLink+"' target='_blank'><img class='redirect-img' src='./static/images/redirect.png'></a></span></h4>";
-    
-    cardText+="<h4 class='card-category'>Conditions:&nbsp;"+card.condition;
-    if(card.topRated!='false'){
-        cardText+="<span><img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'></span>";
-    } 
+    cardText+="<h4 class='card-category'>Category:&nbsp;<span class='category-name'>"+card.category+"&nbsp</span><span><a href='"+card.productLink+"' target='_blank'><img class='redirect-img' src='./static/images/redirect.png'></a></span></h4>";
+    cardText+="<h4 class='card-conditions'><span class='condition-name' style='display:inline;'>Conditions:&nbsp;"+card.condition+"</span>";
     cardText+="</h4>";
+    if(card.topRated!='false'){
+        cardText+="<img src='./static/images/topRatedImage.png' class='top-rated-img' style='display:inline;' alt='top rated'>";
+    } 
+
     if(shippingCost<=0){
         cardText+="<h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div>";
     }else{
@@ -203,12 +190,13 @@ function completeCard(card,index){
     cardText+="<div class='card-text-container'>";
     cardText+="<h4><img class='red-cross' id='redCross"+index+"' src='./static/images/cross.png'></h4>";
     cardText+="<h4 class='card-title'><a href='"+card.productLink+"' target='_blank'>"+card.title+"</a></h4>";
-    cardText+="<h4 class='card-category'>Category:&nbsp;"+card.category+"&nbsp<span><a href='"+card.productLink+"' target='_blank'><img class='redirect-img' src='./static/images/redirect.png'></a></span></h4>";;
-    cardText+="<h4 class='card-category'>Conditions:&nbsp;"+card.condition;
-    if(card.topRated!='false'){
-        cardText+="<span><img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'></span>";
-    } 
+    cardText+="<h4 class='card-category'>Category:&nbsp;<span class='category-name'>"+card.category+"&nbsp</span><span><a href='"+card.productLink+"' target='_blank'><img class='redirect-img' src='./static/images/redirect.png'></a></span></h4>";
+    cardText+="<h4 class='card-conditions'><span class='condition-name'>Conditions:&nbsp;"+card.condition+"</span>";
     cardText+="</h4>";
+    if(card.topRated!='false'){
+        cardText+="<img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'>";
+    } 
+
 
     if(card.acceptReturn=='true'){
         cardText+="<h4 class='card-return'>Sellers&nbsp<span class='accept-bold' style='font-size:bold;'>accepts</span> returns</h4>";
@@ -251,13 +239,13 @@ function prevCard(card){
 
     cardText+="<div class='card-text-container'>";
     cardText+="<h4 class='card-title'><a href='"+card.productLink+"' target='_blank'>"+card.title+"</a></h4>";
-    cardText+="<h4 class='card-category'>Category:&nbsp;"+card.category+"&nbsp<span><a href='"+card.productLink+"' target='_blank'><img class='redirect-img' src='./static/images/redirect.png'></a></span></h4>";
-    
-    cardText+="<h4 class='card-category'>Conditions:&nbsp;"+card.condition;
-    if(card.topRated!='false'){
-        cardText+="<span><img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'></span>";
-    } 
+    cardText+="<h4 class='card-category'>Category:&nbsp;<span class='category-name'>"+card.category+"&nbsp</span><span><a href='"+card.productLink+"' target='_blank'><img class='redirect-img' src='./static/images/redirect.png'></a></span></h4>";
+    cardText+="<h4 class='card-conditions'><span class='condition-name'>Conditions:&nbsp;"+card.condition+"</span>";
     cardText+="</h4>";
+    if(card.topRated!='false'){
+        cardText+="<img src='./static/images/topRatedImage.png' class='top-rated-img' alt='top rated'>";
+    } 
+
     if(shippingCost<=0){
         cardText+="<h4 class='card-price'>Price:&nbsp;$"+card.price+"</h4></div>";
     }else{
@@ -274,27 +262,32 @@ function showMoreCards(event){
     var othersDisplay=target.style.display;
     more=document.getElementById("show-more");
     less=document.getElementById("show-less");
-    if(othersDisplay=='block'){
-        target.style.display='none';//start hiding the 7cards
-        more.style.display='block';
-        less.style.display='none';
-        expand=false;
-        scrollTo(false);
-    }else{
-        target.style.display='block'//start displaying the 7cards
-        more.style.display='none';
-        less.style.display='block';
-        expand=true;
-        scrollTo(true);
-    }
+        //show more no less
+    target.style.display='block'//start displaying the 7cards
+    more.style.display='none';
+    less.style.display='block';
+    clickedMore=true;
+    scrollTo(true);
+}
+
+function showLessCards(event){
+    event.preventDefault();
+    var target=document.getElementById("otherCardsContainer");
+    var othersDisplay=target.style.display;
+    more=document.getElementById("show-more");
+    less=document.getElementById("show-less");
+    target.style.display='none'//start displaying the 7cards
+    more.style.display='block';
+    less.style.display='none';
+    scrollTo(false);
 }
 showMore.addEventListener("click",showMoreCards);
-showLess.addEventListener("click",showMoreCards);
+showLess.addEventListener("click",showLessCards);
 
 //to reset the result-page and show buttons
 function reset(){
-    document.getElementById("show-more").style.display='none';
-    document.getElementById("show-less").style.display='none';
+    //document.getElementById("show-more").style.display='none';
+    //document.getElementById("show-less").style.display='none';
     document.getElementById("otherCards").innerHTML="";
     document.getElementById("topThreeCards").innerHTML="";
 }
@@ -304,20 +297,17 @@ function scrollTo(downWard){
 
     if(downWard){
         window.scrollBy({
-            top: 2000,
-            behavior: 'smooth'
-          });    
+            top: 20000, behavior: 'smooth'
+          });   
     }else{
         window.scrollBy({
-            top: -2000,
-            behavior: 'smooth'
-          });    
+            top: -20000,behavior: 'smooth'
+          });  
     }
-    }
+}
 
 //click card
 function expandCard(card,object,index){
-    //console.log(document.querySelectorAll(".red-cross"));
     if(clicked[index]==false){
         card.innerHTML=completeCard(object,index);
         card.style.height='300px';

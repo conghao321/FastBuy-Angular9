@@ -1,5 +1,6 @@
 from flask import Flask,send_file
 from flask import request,jsonify
+from flask import make_response
 import json
 import requests
 
@@ -45,8 +46,9 @@ def input():
 
         ###The retrieved data should be dealt in python server-side
         result=get_result(item_dict)
+        res=json.dumps(result)
 
-    return json.dumps(result)
+    return res
 
 
 #This function is used to merge the urls and call the eBay API to retrieve data
@@ -56,6 +58,7 @@ def eBayCall(params_dict,filters_url):
     r=requests.get(prev_url,params_dict)
     url=r.url+filters_url
     r=requests.get(url)
+    r.headers.update({'Cache-Control':'no-store','Pragma':'no-cache'})
     print(r.url)
     item_json=r.json()
     #print(item_json)
@@ -123,7 +126,6 @@ def get_result(res_dict):
         item['price']=items_list[i]['sellingStatus'][0]['convertedCurrentPrice'][0]['__value__']
         item['currency']=items_list[i]['sellingStatus'][0]['convertedCurrentPrice'][0]['@currencyId']
         
-
         #item info
         try:
             item['imageURL']=items_list[i]['galleryURL'][0]

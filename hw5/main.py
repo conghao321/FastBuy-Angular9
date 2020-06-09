@@ -36,7 +36,7 @@ def input():
         ###required params
         params_dict={'OPERATION-NAME':'findItemsAdvanced','SERVICE-VERSION':'1.0.0',
         'SECURITY-APPNAME':'haocong-laodashi-PRD-32eb6beb6-89281c37','RESPONSE-DATA-FORMAT':'JSON','REST-PAYLOAD':'',
-        'keywords':keyWords,'paginationInput.entriesPerPage':10}
+        'keywords':keyWords,'paginationInput.entriesPerPage':30}
 
         ###get the filters url:
         filters_url=get_filter_url(priceMin,priceMax,newItem,usedItem,veryGoodItem,goodItem,acceptableItem,returnAccepted,freeShipping,expShipping,sortBy)
@@ -119,57 +119,38 @@ def get_result(res_dict):
     items_list=search_result['item']
 
     obj_list.append(total_count)
+    j=0
     for i in range(item_count):
         item=dict()
-        item['title']=items_list[i]['title'][0]
-        #price
-        item['price']=items_list[i]['sellingStatus'][0]['convertedCurrentPrice'][0]['__value__']
-        item['currency']=items_list[i]['sellingStatus'][0]['convertedCurrentPrice'][0]['@currencyId']
-        
-        #item info
+        try:
+            item['title']=items_list[i]['title'][0]
+            #price
+            item['price']=items_list[i]['sellingStatus'][0]['convertedCurrentPrice'][0]['__value__']
+            item['currency']=items_list[i]['sellingStatus'][0]['convertedCurrentPrice'][0]['@currencyId']
+        except KeyError:   
+            continue   
+            #item info
         try:
             item['imageURL']=items_list[i]['galleryURL'][0]
         except KeyError:
             item['imageURL']='https://thumbs1.ebaystatic.com/pict/04040_0.jpg'
-
         try:
             item['category']=items_list[i]['primaryCategory'][0]['categoryName'][0]
-        except KeyError:
-            pass
-
-        try:
             item['productLink']=items_list[i]['viewItemURL'][0]
-        except KeyError:
-            pass
-        try:
             item['condition']=items_list[i]['condition'][0]['conditionDisplayName'][0]
-        except KeyError:
-            pass            
-        try:
             item['topRated']=items_list[i]['topRatedListing'][0]
-        except KeyError:
-            pass
-        #shipping
-        try:
+            #shipping
             item['shippingCost']=items_list[i]['shippingInfo'][0]['shippingServiceCost'][0]['__value__']
-        except KeyError:
-            pass
-
-        try:
             item['acceptReturn']=items_list[i]['returnsAccepted'][0]
-        except KeyError:
-            pass
-        try:
             item['expedited']=items_list[i]['shippingInfo'][0]['expeditedShipping'][0]
+            item['location']=items_list[i]['location'][0]   
         except KeyError:
-            pass
-        try:
-            item['location']=items_list[i]['location'][0]
-        except KeyError:
-            pass       
+            continue
         #add it into the dict
         obj_list.append(item)
-
+        j+=1
+        if(j==10):
+            break
     #return the complete dict result
     return obj_list
 

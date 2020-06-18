@@ -1,0 +1,36 @@
+
+<!-- 
+Card-component:
+-->
+<div class="card mb-3">
+    <div class="row no-gutters">
+      <div class="col-xs-12 col-sm-2">
+          <div class='img-container mx-auto my-3'>        
+              <img class="card-img card-img-mine mx-auto" [src]='item.imageURL' style="align-items:center;max-width: 70%; max-height:80%">
+          </div>
+
+      </div>
+      <div class="col-xs-12 col-sm-10 ">
+        <div class="card-body">
+            <table>
+                <tr>
+                    <h5 class="card-content,card-title" style="font-weight: 500;font-size:1.1rem; color:#4477b1">  <a [href]=item.productLink target="_blank"> {{item.title}}</a> </h5>
+                </tr>
+                <tr>
+                    <p class="card-content,card-price"> <span style="font-weight: bold;margin:auto auto;">Price:</span>    ${{item.price}}</p>
+                </tr>
+                <tr class='row mx-auto mb-xs-2'>
+                    <div class='col-xs-5 align-self-center'>
+                        <p class='card-content,card-location' style="font-style: italic;margin:auto auto">{{item.location}}</p> 
+                    </div>
+                    <div class='col-xs-7'>
+                        <button type="button" class="btn btn-primary ml-4 active" data-toggle="button" aria-pressed="true" (click)=display()>{{buttonContent}}</button>             
+                    </div>
+                                      
+                </tr>                   
+            </table> 
+            <div class='tabs' *ngIf='showDetails'> <app-tab [item]='item'></app-tab> </div>            
+        </div>
+      </div>
+    </div>
+  </div>

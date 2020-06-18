@@ -1,10 +1,14 @@
 from flask import Flask,send_file
 from flask import request,jsonify
 from flask import make_response
+from flask_cors import CORS
+
+
 import json
 import requests
 
 app = Flask(__name__)
+CORS(app)
 
 #This is the index rout
 @app.route('/',methods=['GET','POST'])

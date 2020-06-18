@@ -1,0 +1,83 @@
+
+.result-text{
+    font-size: 1.3rem;
+    font-family: 'Merriweather', serif;
+}
+
+.card-number-page{
+    max-width: 95%;
+}
+
+
+.custom-pagination .page-number{
+    font-family: 'BlinkMacSystemFont',"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+    display: inline-block;
+    background: #fefefe;
+    margin: 10px 4px;
+    font-size: 1em;
+}
+
+/*
+This is the current selected number
+*/
+.page-number.current{
+    
+    background: #2199e8!important;
+    font-family: 'BlinkMacSystemFont',"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+
+}
+
+.page-number span{
+    font-family: 'BlinkMacSystemFont',"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+    text-align: center; 
+    display: inline-block;
+    vertical-align: center;
+    width: 28px;
+    height:auto;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.pagination-previous,.pagination-next{
+    font-family: 'BlinkMacSystemFont',"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+    text-align: center;
+    display: inline-block;
+    
+}
+
+@media (max-width: 800.1px) { 
+
+    .custom-pagination .page-number{
+        font-family: 'BlinkMacSystemFont',"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+        display: inline-block;
+        background: #fefefe;
+        margin: 10px 4px;
+        font-size: 0.9em;
+    }
+    /*
+    This is the current selected number
+    */
+    .page-number.current{    
+        background: #2199e8!important;
+        font-family: 'BlinkMacSystemFont',"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+    
+    }
+    .page-number span{
+        font-family: 'BlinkMacSystemFont',"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+        text-align: center; 
+        display: inline-block;
+        vertical-align: center;
+        width: 16px;
+        height:auto;
+        font-size: 0.9rem;
+        cursor: pointer;
+    } 
+    .pagination-previous,.pagination-next{
+        font-family: 'BlinkMacSystemFont',"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+        text-align: center;
+        display: inline-block;
+        
+    }
+ }
+
+

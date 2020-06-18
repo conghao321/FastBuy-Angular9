@@ -1,0 +1,15 @@
+.check{
+    color: green;
+}
+.cross{
+    color:red;
+}
+
+.table{
+text-align: left;
+}
+
+td{
+    padding-left: 20px;
+    padding-top: 10px;
+}

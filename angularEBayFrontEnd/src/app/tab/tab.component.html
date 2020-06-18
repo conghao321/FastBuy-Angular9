@@ -1,0 +1,82 @@
+<mat-tab-group >
+    <mat-tab label="Basic Info"> 
+      <div class='table-responsive'>
+        <table class="table-sm">
+          <tbody>
+            <tr>
+              <th scope="row" class='col-xs-4'>Category Name</th>
+              <td >{{item.category}}</td>
+            </tr>
+            <tr>
+              <th scope="row" class='col-xs-4'>Conditions</th>
+              <td> {{item.condition}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+  </mat-tab>
+
+    <mat-tab label="Shipping Info"> 
+      <div class='table-responsive'>
+        <table class="table-sm">
+          <tbody>
+            <tr>
+              <th scope="row">Shipping Type</th>
+              <td>{{item.shippingType}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Shipping cost</th>
+              <td> {{item.shippingCost}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Ship To Locations</th>
+              <td>{{item.shipToLocations}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Expedited Shipping</th>
+              <td *ngIf="item.expedited=='true'"><span class="material-icons check">done</span></td>
+              <td *ngIf="item.expedited=='false'"><span class="material-icons cross">clear</span></td>
+            </tr>
+            <tr>
+              <th scope="row">OneDayShippingAvailable</th>
+              <td *ngIf="item.oneDay=='true'"><span class="material-icons check">done</span></td>
+              <td *ngIf="item.oneDay=='false'"><span class="material-icons cross">clear</span></td>
+            </tr>
+          </tbody>
+        </table>   
+      </div>
+
+    </mat-tab>
+
+
+    <mat-tab label="Listing Info"> 
+      <table class="table-sm-sm">
+        <tbody>
+          <tr>
+            <th scope="row" >BetterOfferEnabled</th>
+            <td *ngIf="item.bestOffer=='true'"><span class="material-icons check">done</span></td>
+            <td *ngIf="item.bestOffer=='false'"><span class="material-icons cross">clear</span></td>
+          </tr>
+          <tr>
+            <th scope="row" >BuyItNowAvailable</th>
+            <td *ngIf="item.buyItNowAvailable=='true'"><span class="material-icons check">done</span></td>
+            <td *ngIf="item.buyItNowAvailable=='false'"><span class="material-icons cross">clear</span></td>
+          </tr>
+          <tr>
+            <th scope="row" >ListingType</th>
+            <td>{{item.listingType}}</td>
+          </tr>
+          <tr>
+            <th scope="row" >Gift</th>
+            <td *ngIf="item.gift=='true'"><span class="material-icons check">done</span></td>
+            <td *ngIf="item.gift=='false'"><span class="material-icons cross">clear</span></td>
+          </tr>
+          <tr>
+            <th scope="row" >WatchCount</th>
+            <td>{{item.watchCount}}</td>
+          </tr>
+        </tbody>
+      </table>   
+    </mat-tab>
+</mat-tab-group>

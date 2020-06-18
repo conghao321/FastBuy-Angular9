@@ -1,0 +1,133 @@
+<!-- 
+The main page component and its input-form component
+we also display all result on this page 
+-->
+
+
+
+<!--    The total page  -->
+<div class="overall-class container-fluid">
+      <!--logo image-->
+  <div class="row logo-container">
+    <a class='col-lg-12' href="https://www.ebay.com/"><img class="logo-img d-flex justify-content-between" src="../../assets/eBayLogo.png"></a>
+  </div>
+
+  <!--    The form control  -->
+  <form [formGroup]="inputForm" class='input-form' name="form1" (ngSubmit)="onSubmit(inputForm.value) ">
+  <!--    
+    keywords
+  -->
+  <div class="form-group row" >
+    <label for="keyword" class="col-lg-2 col-form-label"> Key word<span class='red-star'>*</span> </label>
+    <div class="col-lg-10">
+      <input type="text" class="form-control" id="keyWord" formControlName="keyWord" required>
+    </div>
+  </div>
+  <!--    
+    price-range
+  -->
+  <div class="form-group row">
+    <label class="col-lg-2 col-xs-1 ml-0 mt-2 col-form-label">Price range</label>
+    <div class="price col-sm-5 col-md-6 col-xs-5 col-lg-5 ml-0 mt-2">
+      <input type="text" class="price-range form-control" id="price1" formControlName="price1" placeholder="Min Price">
+    </div>
+    <div class="price col-sm-5 col-md-6 col-xs-5 col-lg-5 ml-0 mt-2">
+      <input type="text" class="price-range form-control" id="price2" formControlName="price2" placeholder="Max Price">
+    </div>
+  </div>
+
+  <!-- conditions-->
+  <div class="form-group row px-auto">
+    <div class="col-lg-2 col-xs-12 mt-2 col-form-label">Conditions:</div>
+    <div class="col-lg-10 col-xs-12 mt-3">
+        <input class="condition-checkbox " type="checkbox" name="new" formControlName="new"><label class=''>&nbsp;New&nbsp;</label>
+        <input class="condition-checkbox "type="checkbox" name="new" formControlName="used"><label>&nbsp;Used&nbsp;</label>
+        <input class="condition-checkbox "type="checkbox" name="new" formControlName="veryGood"><label>&nbsp;Very Good&nbsp;</label>
+        <input class="condition-checkbox  "type="checkbox" name="new" formControlName="good"><label>&nbsp;Good&nbsp;</label>
+        <input class="condition-checkbox "type="checkbox" name="new" formControlName="acceptable"><label>&nbsp;Acceptable</label>
+    </div>
+  </div>
+
+  <!--return?-->
+  <div class="form-group row mt-2">
+    <div class="col-lg-2 col-form-label">Seller:</div>
+    <div class="col-lg-10">
+      <div class="form-check form-control-plaintext">
+        <input class="form-check-input" type="checkbox" id="return" formControlName="return">
+        <label class="form-check-label" >Return Accepted</label>
+      </div>
+    </div>
+  </div>
+  <!--Shipping Free??-->
+  <div class="form-group row mt-2">
+    <div class="col-lg-2 col-form-label">Shipping:</div>
+    <div class="col-lg-1">
+      <div class="form-check form-control-plaintext">
+        <input class="form-check-input" type="checkbox" id="free" formControlName="free">
+        <label class="form-check-label" >Free</label>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="form-check form-control-plaintext">
+        <input class="form-check-input" type="checkbox" id="return" formControlName="expedited">
+        <label class="form-check-label">Expedited</label>
+      </div>
+    </div>
+  </div>
+  <!--Sort By-->
+
+  <div class="form-group row ">
+    <div class="col-lg-2 mt-2 col-form-label">Sort By:</div> 
+    <div class="col-lg-10 mt-2">
+      <select  class='custom-select' formControlName="sortBy">
+        <option class='option-background bg-secondary text-white' value="BestMatch" >Best Match</option>
+        <option class='option-background bg-secondary text-white' value="CurrentPriceHighest">Price: highest first</option>
+        <option class='option-background bg-secondary text-white' value="PricePlusShippingHighest">Price + Shipping: highest first</option>
+        <option  class='option-background bg-secondary text-white' value="PricePlusShippingLowest">Price + Shipping: lowest first</option>
+        </select>
+    </div>
+  </div>
+
+  <!--Buttons-->
+  <div class="form-group row">
+      <div class='col-lg-12 d-flex justify-content-end'>
+        <button type="submit" class="btn btn-primary ml-2" for="form-1" style="background-color: #357ab7;"><img class='btn-icon ml-0' src="../../assets/search.png"> Submit</button>
+        <button (click)="resetForm()" type="reset" class="btn btn btn-secondary ml-2" for="form-1"><img class='btn-icon ml-0' src="../../assets/clearall.png"> Clear</button>
+      </div> 
+  </div>
+</form>
+</div>
+
+<div class='result-area container-fluid' [hidden]='!submitted'>
+<!--alert area-->
+<div *ngIf="submitted&&inputError">
+  <div *ngIf="inputForm.value.keyWord ==''|| inputForm.value.keyWord ==null" class='alert-text'>
+      <div class='row'> 
+        <div class="col-sm-8 mx-auto alert alert-warning" role="alert">Please enter a keyword</div>
+      </div>   
+  </div>
+
+  <div class='alert-text' *ngIf="inputForm.value.price1<0||inputForm.value.price2<0||((inputForm.value.price1!=''&&inputForm.value.price2!='')&&(inputForm.value.price1>inputForm.value.price2))">
+    <div class='row'> 
+      <div class="col-sm-12 alert alert-warning" role="alert">Please enter appropriate values for minPrice/maxPrice</div>
+    </div>   
+  </div>
+</div>
+<!--Cards Pages Area-->
+<div  *ngIf='submitted&&!inputError' class='result'>
+  
+  <div class='alert-text' *ngIf="totalNum<=0">
+    <div class='row'> 
+      <div class="col-sm-12 alert alert-warning" role="alert">No exist matches found</div>
+    </div>   
+  </div>
+
+  <app-page *ngIf='totalNum>0' class='container-fluid'[submitted]='submitted' [totalNum]='totalNum' [cards]='data' [keyWord]='keyWord'></app-page>
+
+</div>
+
+
+</div>
+
+
+

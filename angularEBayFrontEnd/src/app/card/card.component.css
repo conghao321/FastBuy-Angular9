@@ -1,0 +1,40 @@
+
+.card{
+    background-color: #dddddd;
+}
+
+.card-title{
+    font-weight: 500;
+    font-size:1.2rem; 
+    color:#4477b1
+}
+
+.btn.btn-primary{
+    width: 110px;
+    font-size: 0.9em;
+    color: black !important;
+    background-color: white !important;
+    border-color: white !important;
+}
+
+
+.img-container{
+    text-align: center;
+}
+
+@media (max-width: 575.98px) { 
+    .card-title{
+        font-weight: 500;
+        font-size:1.1rem; 
+        color:#4477b1
+    }
+    .card{
+        font-size: 0.9em;
+    }
+
+    .card-img-mine{
+        margin:0 auto;
+        max-height: 200px;
+        width: auto;
+    }
+}

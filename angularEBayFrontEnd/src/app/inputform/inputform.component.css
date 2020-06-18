@@ -1,0 +1,100 @@
+
+
+#input-form{
+    font-weight: bolder;
+}
+.logo-img{
+    margin: 0 auto;
+    align-self: center;
+}
+
+.overall-class{
+    margin:0 auto;
+}
+
+.btn{
+    width: 100px;
+    height: 37px;
+    font-size: 1em;
+}
+
+.btn-icon{
+    float: left;
+    width: 18px;
+    height: 18px;
+}
+.form-check-label{
+    font-size: 14px;
+}
+.red-star{
+    color:red;
+}
+
+@media (min-width: 768px) { 
+    .overall-class{
+        width: 70%;
+        height: auto;
+        
+    }
+    .logo-img{
+        width: 300px;
+        height: auto;
+    }
+    .condition-checkbox{
+        margin-left: auto;
+    }
+    .result-area{
+        margin:0 auto;
+        width: 95%;
+        height:auto;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) { 
+    .price{       
+        width: 100%;
+    }
+    .overall-class{
+        width: 75%;
+        height: auto;
+        
+    }
+    .logo-img{
+        width: 300px;
+        height: auto;
+    }
+    .result-area{
+        margin:0 auto;
+        width: 90%;
+        height:auto;
+    }
+ }
+
+
+@media (max-width: 575.98px) { 
+    .overall-class{
+        font-size: 0.9em;
+    }
+    .form-check-label{
+        font-size: 0.9em;
+    }
+    .logo-img{
+        width: 100%;
+        height: auto;
+    }
+    .price{       
+        width: 50%;
+    }
+ }
+
+
+ .alert-text{
+     text-align: center;
+ }
+
+ .alert-warning{
+    color: black;
+    font-weight: 600;
+    background-color: #fbfbcb;
+    border-color: #fbfbcb;
+ }

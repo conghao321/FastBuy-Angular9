@@ -2,7 +2,7 @@ runtime: python37
 
 handlers:
 - url: /
-  static_files: version3/index.html
-  upload: version3/index.html
+  static_files: v1/index.html
+  upload: v1/index.html
 - url: /
-  static_dir: version3
+  static_dir: v1

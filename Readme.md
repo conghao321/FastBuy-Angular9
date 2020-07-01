@@ -2,7 +2,7 @@
 
 #### A web application can enable users search  items details and fetch items' cards from eBay.
 
-
+##### The companion application with eBay Catalog Search :https://github.com/conghao321/eBay-Catalog-Search
 
 Developed it by TypeScript, Javascript and Python.
 
@@ -53,7 +53,6 @@ c. To fetch the item cards' list
 <img src = 'https://ftp.bmp.ovh/imgs/2020/07/13194a4b80f9e597.png' width=500/>
 
 <img src = 'https://ftp.bmp.ovh/imgs/2020/07/6e5ed07039682f74.png' width=300/>       Much more details inside the card
-
 
 <hr>
 

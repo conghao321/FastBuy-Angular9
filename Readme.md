@@ -52,8 +52,8 @@ c. To fetch the item cards' list
 
 <img src = 'https://ftp.bmp.ovh/imgs/2020/07/13194a4b80f9e597.png' width=500/>
 
-<img src = 'https://ftp.bmp.ovh/imgs/2020/07/6e5ed07039682f74.png' width=300/> Much more details inside the card
-<img src = 'https://ftp.bmp.ovh/imgs/2020/07/5a97474cc041061a.png' width=500/>   much more details inside the card
+<img src = 'https://ftp.bmp.ovh/imgs/2020/07/6e5ed07039682f74.png' width=300/>       Much more details inside the card
+
 
 <hr>
 

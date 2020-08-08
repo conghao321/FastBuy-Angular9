@@ -1,8 +1,7 @@
-# eBay Item Card Search Application
+# FastBuy: Items Search Application(eBay Section)
 
-#### A web application can enable users search  items details and fetch items' cards from eBay.
+#### A web application can enable users search  items details and fetch items' cards from eBay API and others.
 
-##### The companion application with eBay Catalog Search :https://github.com/conghao321/eBay-Catalog-Search
 
 Developed it by TypeScript, Javascript and Python.
 

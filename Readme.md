@@ -1,4 +1,4 @@
-# FastBuy: Items Search Application(eBay Section)
+# FastChoose: Items Search Application(eBay Section)
 
 #### A web application can enable users search  items details and fetch items' cards from eBay API and others.
 
